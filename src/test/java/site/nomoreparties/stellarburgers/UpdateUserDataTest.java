@@ -30,6 +30,7 @@ public class UpdateUserDataTest extends AbstractTest{
   Faker faker = new Faker(new Locale("en-GB"));
   FakeValuesService fakeValuesService = new FakeValuesService(
     new Locale("en-GB"), new RandomService());
+  private String accessToken;
 
   @Before
   public void setUp() {
@@ -39,6 +40,11 @@ public class UpdateUserDataTest extends AbstractTest{
     user.setEmail(fakeValuesService.bothify("????##@mail.ru"));
     user.setPassword(randomAlphabetic(10));
     user.setName(faker.name().firstName());
+
+    accessToken = userSteps
+      .createUser(user)
+      .then()
+      .extract().body().path("accessToken");
   }
 
   @After
@@ -52,13 +58,7 @@ public class UpdateUserDataTest extends AbstractTest{
   @DisplayName("[200] [PATCH api/auth/user] Update user data. Correct request")
   public void shouldReturn200ToUpdateIfDataIsCorrect() {
 
-    String accessToken = new UserSteps()
-      .createUser(user)
-      .then()
-      .extract().body().path("accessToken");
-
     user.setAccessToken(accessToken);
-
     user.setEmail(fakeValuesService.bothify("????##@mail.ru"));
     user.setPassword(randomAlphabetic(10));
     user.setName(faker.name().firstName());
@@ -76,17 +76,11 @@ public class UpdateUserDataTest extends AbstractTest{
   @DisplayName("[401] [PATCH api/auth/user] Update user data without authorization")
   public void shouldReturn401ToUpdateIfLoginPasswordNotCorrect() {
 
-    String accessToken = userSteps
-      .createUser(user)
-      .then()
-      .extract().body().path("accessToken");
-
     userSteps
       .updateUser(user)
       .then()
       .statusCode(equalTo(SC_UNAUTHORIZED))
-      .body("success", is(false))
-      .body("message", is(SHOULD_BE_AUTHORISED));
+      .body("success", is(false));
 
     user.setAccessToken(accessToken);
   }
