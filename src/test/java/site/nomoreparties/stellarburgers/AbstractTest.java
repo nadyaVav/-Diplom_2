@@ -16,4 +16,5 @@ public class AbstractTest {
       .setBaseUri(BASE_URI)
       .build();
   }
+
 }

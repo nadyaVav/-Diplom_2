@@ -160,5 +160,4 @@ public class CreateOrderTest extends AbstractTest{
       .statusCode(equalTo(SC_INTERNAL_SERVER_ERROR));
   }
 
-
 }

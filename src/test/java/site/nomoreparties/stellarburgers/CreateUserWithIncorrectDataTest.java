@@ -21,7 +21,6 @@ import site.nomoreparties.stellarburgers.steps.UserSteps;
 @Feature("[POST /api/auth/register] Create user")
 @RunWith(Parameterized.class)
 public class CreateUserWithIncorrectDataTest extends AbstractTest{
-
   private User user;
   private String name;
   private String email;
@@ -56,15 +55,12 @@ public class CreateUserWithIncorrectDataTest extends AbstractTest{
   @Test
   @DisplayName("[403] [POST api/auth/register] Create user. Incorrect request")
   public void shouldReturn403IfRequiredFieldsIsIncorrect() {
-
     new UserSteps()
       .createUser(user)
       .then()
       .statusCode(equalTo(SC_FORBIDDEN))
       .body("success", is(false))
       .body("message", is(CREATE_USER_WITHOUT_REQUIRED_FIELDS));
-
   }
-
 
 }

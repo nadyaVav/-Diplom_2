@@ -87,7 +87,6 @@ public class LoginUserTest extends AbstractTest{
       .statusCode(equalTo(SC_UNAUTHORIZED))
       .body("success", is(false))
       .body("message", is(INCORRECT_DATA_FOR_LOGIN));
-
   }
 
 }
